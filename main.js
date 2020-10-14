@@ -1,20 +1,35 @@
 const { app, BrowserWindow } = require('electron')
-
-function createWindow () {   
+const { execSync, spawn } = require('child_process');
+function createWindow() {
   // 创建浏览器窗口
   const win = new BrowserWindow({
-    width: 800,
+    width: 1024,
     height: 600,
     webPreferences: {
       nodeIntegration: true
     }
   })
+  // console.log(execSync('ls'));
+  // const ls = spawn('ls', ['-l']);
+  const ls = spawn('node', ['./node_modules/whistle/bin/whistle.js', 'start', '-p', '8898']);
+
+  ls.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+  });
+  ls.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
+  ls.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
+
 
   // 并且为你的应用加载index.html
-  win.loadFile('index.html')
+  // win.loadFile('index.html')
 
-  // 打开开发者工具
-  win.webContents.openDevTools()
+    win.loadURL('http://localhost:8898')
+    // 打开开发者工具
+    win.webContents.openDevTools();
 }
 
 // Electron会在初始化完成并且准备好创建浏览器窗口时调用这个方法

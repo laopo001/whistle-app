@@ -3,12 +3,32 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
+  "build": {
+    "appId": "com.xxx.app",
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron --inspect=5858 .",
+    "dist": "electron-builder --mac --x64"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^9.2.0"
+    "electron": "^9.2.0",
+    "electron-builder": "^22.9.1"
+  },
+  "dependencies": {
+    "whistle": "^2.5.23"
   }
 }
