@@ -1,35 +1,43 @@
 const { app, BrowserWindow } = require('electron')
-const { execSync, spawn } = require('child_process');
+const { execSync, exec, spawn, fork } = require('child_process');
+const os = require('os')
 function createWindow() {
   // 创建浏览器窗口
   const win = new BrowserWindow({
     width: 1024,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
     }
   })
-  // console.log(execSync('ls'));
-  // const ls = spawn('ls', ['-l']);
-  const ls = spawn('node', ['./node_modules/whistle/bin/whistle.js', 'start', '-p', '8898']);
 
-  ls.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`);
-  });
-  ls.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`);
-  });
-  ls.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
-  });
+  // const ls = spawn('node', ['-v']);
+
+  // const ls = spawn(process.execPath, ['./node_modules/whistle/bin/whistle.js', 'start', '-p', '8898'], {
+  //   stdio: [0, 1, 2, 'ipc']
+  // });
+
+  // ls.stdout.on('data', (data) => {
+  //   console.log(`stdout: ${data}`);
+  // });
+  // ls.stderr.on('data', (data) => {
+  //   console.error(`stderr: ${data}`);
+  // });
+  // ls.on('close', (code) => {
+  //   console.log(`child process exited with code ${code}`);
+  // });
 
 
   // 并且为你的应用加载index.html
-  // win.loadFile('index.html')
+  win.loadFile('index.html')
 
-    win.loadURL('http://localhost:8898')
-    // 打开开发者工具
-    win.webContents.openDevTools();
+  // win.loadURL('http://localhost:8899')
+  // 打开开发者工具
+  win.webContents.openDevTools();
+
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.send('ping', 'whoooooooh!')
+  })
 }
 
 // Electron会在初始化完成并且准备好创建浏览器窗口时调用这个方法

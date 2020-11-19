@@ -1,15 +1,46 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chrome <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hello World!</title>
+  <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+</head>
+
+<body>
+  <div>
+    node version <span class="node">没有安装</span>
+  </div>
+  <div>
+    npm version <span class="npm">没有安装</span>
+  </div>
+  <div>
+    whistle version <span class="whistle">没有安装</span>
+    <button class="install_whistle" onclick="install_whistle(event)">安装</button>
+    <button class="open_whistle" onclick="open_whistle(event)">打开</button>
+  </div>
+  <script>
+    // const electron = require('electron')
+    // console.log(electron);
+    // electron.ipcRenderer.on('ping', (event, message) => {
+    //   console.log(message) // Prints 'whoooooooh!'
+    // })
+    const { execSync, exec, spawn, fork } = require('child_process');
+    const $ = require('jquery');
+    $('.node').text(new TextDecoder().decode(execSync('node -v')))
+    $('.npm').text(new TextDecoder().decode(execSync('npm -v')))
+    $('.whistle').text(new TextDecoder().decode(execSync('w2 -V')))
+    function install_whistle(e) {
+      $('.install_whistle').hide();
+      $('.whistle').text('等待。。。')
+      console.log(new TextDecoder().decode(execSync('npm i -g whistle')));
+      $('.whistle').text(new TextDecoder().decode(execSync('w2 -V')))
+    }
+    function open_whistle() {
+      location.href = "http://localhost:8899";
+    }
+  </script>
+</body>
+
 </html>

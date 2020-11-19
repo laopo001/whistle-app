@@ -20,7 +20,9 @@
   },
   "scripts": {
     "start": "electron --inspect=5858 .",
-    "dist": "electron-builder --mac --x64"
+    "dist": "electron-builder --mac --x64",
+    "pkg": "pkg -t node12-macos node_modules/whistle/bin/whistle.js",
+    "pkg2": "pkg -t node12-macos index.js"
   },
   "author": "",
   "license": "ISC",
@@ -28,7 +30,15 @@
     "electron": "^9.2.0",
     "electron-builder": "^22.9.1"
   },
+  "pkg": {
+    "scripts": [],
+    "assets": [],
+    "targets": [
+      "node12-macos-x64"
+    ]
+  },
   "dependencies": {
+    "jquery": "^3.5.1",
     "whistle": "^2.5.23"
   }
 }
